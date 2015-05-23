@@ -1,7 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pavel
- * Date: 23.05.15
- * Time: 16:27
- */ 
+use core\GatewayFactory;
+
+require_once('core/GatewayFactory.php');
+require_once('core/Config.php');
+
+$gatewayFactory = new GatewayFactory('cobrebem');
+$cobrebemGateway = $gatewayFactory->getGatewayObject();

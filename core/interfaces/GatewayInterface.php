@@ -1,7 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pavel
- * Date: 23.05.15
- * Time: 16:28
- */ 
+
+namespace core\interfaces;
+
+interface GatewayInterface {
+    public function setPaymentCredentials(array $credentialsArray = []);
+}
