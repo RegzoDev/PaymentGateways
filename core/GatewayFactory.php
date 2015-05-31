@@ -19,17 +19,24 @@ class GatewayFactory {
         $this->config = new Config();
         $this->gatewaysPath = $this->config->get('gatewaysPath');
         $this->setGatewayPath();
+        $this->loadBaseClasses();
     }
 
-    public function getGatewayObject() {
+    public function getGatewayObject(array $parameters = []) {
+
         require_once($this->gatewayPath);
         $className = ucfirst($this->gatewayName);
-        $object = new $className;
+        $object = new $className($parameters);
         return $object;
     }
 
 
     private function setGatewayPath() {
        $this->gatewayPath =  $this->gatewaysPath . DIRECTORY_SEPARATOR . strtolower($this->gatewayName) . DIRECTORY_SEPARATOR . ucfirst($this->gatewayName) . $this->gatewayExt;
+    }
+
+    private function loadBaseClasses() {
+        require_once('core/BaseGateway.php');
+        require 'vendor/autoload.php';
     }
 }

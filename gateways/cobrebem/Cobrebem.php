@@ -1,13 +1,19 @@
 <?php
 
 use core\interfaces\GatewayInterface;
+use core\Config;
+use core\BaseGateway;
 
-class Cobrebem implements GatewayInterface{
+class Cobrebem extends BaseGateway implements  GatewayInterface{
 
-    public function __construct() {
-        
-    }
+    protected $testMode;
+    protected $configName = 'cobrebem';
+    protected $testHost = 'https://teste.aprovafacil.com/';
+    protected $mainHost = 'https://aprovafacil.com/';
+
     public function setPaymentCredentials(array $credentialsArray = array()) {
-
+        var_dump($this->apiClient);
     }
+
+
 } 
