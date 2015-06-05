@@ -3,6 +3,7 @@
 namespace core;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
 
 class BaseGateway {
 
@@ -12,6 +13,8 @@ class BaseGateway {
     protected $mainHost;
 
     protected $apiClient;
+
+    protected $apiTimeout = 2;
 
     public function __construct($parameters) {
         if(!empty($parameters['testMode'])) {
@@ -34,7 +37,11 @@ class BaseGateway {
     private function setApiClient() {
         $this->apiClient = new Client([
             'base_uri' => $this->host,
-            'timeout' => 2,
+            'timeout' => $this->apiTimeout,
         ]);
+    }
+
+    protected function sendPostRequest($path, $parameters) {
+        return $this->apiClient->post($path, $parameters);
     }
 }
