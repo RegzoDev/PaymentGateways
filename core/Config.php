@@ -11,7 +11,7 @@ class Config {
 
     public function get($varName, $configFile = 'core') {
         if(!array_key_exists($configFile, $this->configArray)) {
-            $this->configArray[$configFile] = include_once($this->configDir . $configFile . $this->configExt);
+            $this->configArray[$configFile] = include($this->configDir . $configFile . $this->configExt);
         }
         if(!array_key_exists($varName, $this->configArray[$configFile])) {
             throw new \Exception($varName. ' config variable is not defined');

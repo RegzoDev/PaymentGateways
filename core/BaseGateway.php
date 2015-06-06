@@ -12,6 +12,9 @@ class BaseGateway {
     protected $testHost;
     protected $mainHost;
 
+    /**
+     * @var Client
+     */
     protected $apiClient;
 
     protected $apiTimeout = 2;

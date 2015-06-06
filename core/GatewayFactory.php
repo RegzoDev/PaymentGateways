@@ -2,6 +2,8 @@
 
 namespace core;
 
+use RezgoPayment\Securepay;
+
 class GatewayFactory {
 
     private $gatewayName;
@@ -25,7 +27,7 @@ class GatewayFactory {
     public function getGatewayObject(array $parameters = []) {
 
         require_once($this->gatewayPath);
-        $className = ucfirst($this->gatewayName);
+        $className = '\\RezgoPayment\\'.ucfirst($this->gatewayName);
         $object = new $className($parameters);
         return $object;
     }
