@@ -11,5 +11,25 @@ class Cobrebem extends BaseGateway implements  GatewayInterface{
         var_dump($this->apiClient);
     }
 
+    public function approvalRequest() {
+
+    }
+
+    public function captureRequest() {
+
+    }
+
+    public function cancelTransaction() {
+
+    }
+
+    public function refundCallback() {
+
+    }
+
+    public function refundResult() {
+
+    }
+
 
 } 
