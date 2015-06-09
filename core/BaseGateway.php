@@ -11,10 +11,12 @@ class BaseGateway {
     protected $configName;
     protected $testHost;
     protected $mainHost;
+    protected $requestParameters;
+    protected $validator;
 
     protected $apiClient;
 
-    protected $apiTimeout = 2;
+    protected $apiTimeout = 0;
 
     public function __construct($parameters) {
         if(!empty($parameters['testMode'])) {
@@ -32,16 +34,57 @@ class BaseGateway {
         }
 
         $this->setApiClient();
+        $this->requestParameters = $this->config->get('requestParameters', $this->configName);
+
+        $this->validator = new Validator();
     }
 
     private function setApiClient() {
         $this->apiClient = new Client([
             'base_uri' => $this->host,
             'timeout' => $this->apiTimeout,
+            'verify' => false
         ]);
     }
 
     protected function sendPostRequest($path, $parameters) {
-        return $this->apiClient->post($path, $parameters);
+        $response = $this->apiClient->post($path, [
+            'form_params' => $parameters
+        ]);
+        $body = $response->getBody();
+
+        return $body;
+    }
+
+    protected function validateRequestParameters($parameters = [], $requestName = '') {
+        if(count($parameters) === 0 || $requestName === '') {
+            throw new \Exception('Invalid number of parameters provided');
+        }
+
+        if(!$this->requestParameters[$requestName]) {
+            throw new \Exception('Configuration for request not found');
+        }
+
+        /**
+         * Mandatory parameters validation
+         */
+        foreach($this->requestParameters[$requestName]['mandatory'] AS $parameterName => $parameterValidation) {
+            if(!array_key_exists($parameterName, $parameters)) {
+                throw new \Exception('Mandatory parameter not found: '. $parameterName);
+            }
+        }
+
+        foreach($parameters AS $parameterName => $parameterValue) {
+            $parameterValidation = '';
+            if(array_key_exists($parameterName, $this->requestParameters[$requestName]['mandatory'])) {
+                $parameterValidation = $this->requestParameters[$requestName]['mandatory'][$parameterName];
+            }
+            if(array_key_exists($parameterName, $this->requestParameters[$requestName]['optional'])) {
+                $parameterValidation = $this->requestParameters[$requestName]['optional'][$parameterName];
+            }
+            if($parameterValidation) {
+                $this->validator->validate($parameterValidation, $parameters[$parameterName], $parameterName);
+            }
+        }
     }
 }

@@ -37,6 +37,8 @@ class GatewayFactory {
 
     private function loadBaseClasses() {
         require_once('core/BaseGateway.php');
+        require_once('core/Validator.php');
         require 'vendor/autoload.php';
+
     }
 }

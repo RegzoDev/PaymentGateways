@@ -3,13 +3,14 @@
 return [
     'host' => 'https://aprovafacil.com/cgi-bin/APFW/',
     'testHost' => 'https://teste.aprovafacil.com/cgi-bin/APFW/',
+    'user' => 'checklist',
     'approvalRequestUrl' => 'APC',
     'requestParameters' => [
         'approvalRequest' => [
             'mandatory' => [
                 'NumeroDocumento' => 'string', // Company Order ID
                 'ValorDocumento' => 'float', // amount
-                'QuantidadeParcelas' => 'int',
+                'QuantidadeParcelas' => 'int', //Amount of Installment
                 'NumeroCartao' => 'int', // string
                 'MesValidade' => 'date', // card expiration month
                 'AnoValidade' => 'date', // card expiration year

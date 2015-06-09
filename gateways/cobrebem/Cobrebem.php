@@ -7,12 +7,16 @@ class Cobrebem extends BaseGateway implements  GatewayInterface{
 
     protected $configName = 'cobrebem';
 
+    const APPROVAL_REQUEST_NAME = 'approvalRequest';
+
     public function setPaymentCredentials(array $credentialsArray = array()) {
-        var_dump($this->apiClient);
+
     }
 
-    public function approvalRequest() {
-
+    public function approvalRequest($parameters) {
+        $this->validateRequestParameters($parameters, self::APPROVAL_REQUEST_NAME);
+        $url = $this->config->get('user', 'cobrebem') . '/' . $this->config->get('approvalRequestUrl', 'cobrebem');
+        $this->sendPostRequest($url, $parameters);
     }
 
     public function captureRequest() {
