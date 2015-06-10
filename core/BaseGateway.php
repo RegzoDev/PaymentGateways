@@ -18,6 +18,8 @@ class BaseGateway {
 
     protected $apiTimeout = 0;
 
+    protected $logger;
+
     public function __construct($parameters) {
         if(!empty($parameters['testMode'])) {
             $this->testMode = $parameters['testMode'];
@@ -37,6 +39,7 @@ class BaseGateway {
         $this->requestParameters = $this->config->get('requestParameters', $this->configName);
 
         $this->validator = new Validator();
+        $this->logger = new Logger();
     }
 
     private function setApiClient() {
@@ -52,7 +55,7 @@ class BaseGateway {
             'form_params' => $parameters
         ]);
         $body = $response->getBody();
-
+        $this->logger->logRequest($path, $parameters, $body);
         return $body;
     }
 
